@@ -1,0 +1,17 @@
+syntax ="proto3";
+import "google/protobuf/wrappers.proto";
+
+//import "wrappers.proto";
+option go_package = "./;errors";
+package pb;
+service OrderManagement {
+    rpc getOrder(google.protobuf.StringValue) returns (Order);
+    rpc addOrder(Order) returns (google.protobuf.StringValue);
+}
+message Order {
+    string id =1;
+    repeated string items=2; //这个字段在消息中可以重复出现任意次，包括0次
+    string description =3;
+    float price=4;
+    string destination=5;
+}
