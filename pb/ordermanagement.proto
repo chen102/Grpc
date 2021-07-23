@@ -1,13 +1,17 @@
 syntax ="proto3";
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
 
 //import "wrappers.proto";
 option go_package = "./;errors";
 package pb;
 service OrderManagement {
+    rpc initOrder(google.protobuf.Empty) returns (google.protobuf.StringValue); //google.protobuf.Empty空参
     rpc getOrder(google.protobuf.StringValue) returns (Order);
     rpc addOrder(Order) returns (google.protobuf.StringValue);
     rpc searchOrder(google.protobuf.StringValue) returns (stream Order);
+    rpc updateOrder(stream Order) returns (google.protobuf.StringValue);
+    rpc processOrder(stream google.protobuf.StringValue) returns (stream CombinedShipment);
 }
 message Order {
     string id =1;
@@ -15,4 +19,9 @@ message Order {
     string description =3;
     float price=4;
     string destination=5;
+}
+message CombinedShipment {
+    string id =1;
+    string status =2;
+    repeated Order orderList =3;
 }
